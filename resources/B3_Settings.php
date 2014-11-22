@@ -4,7 +4,7 @@
  * @subpackage B3/API
  */
 
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
 
@@ -45,8 +45,8 @@ class B3_Settings extends B3_API {
 	 *
 	 * @param WP_JSON_ResponseHandler $server The REST API response handler.
 	 */
-	public function __construct( WP_JSON_ResponseHandler $server ) {
-		parent::__construct( $server );
+	public function __construct(WP_JSON_ResponseHandler $server) {
+		parent::__construct($server);
 
 		$this->settings = new B3_SettingsHelper();
 	}
@@ -57,19 +57,19 @@ class B3_Settings extends B3_API {
 	 * @param  array $routes API routes.
 	 * @return array         Changed API routes.
 	 */
-	public function register_routes( $routes ) {
+	public function register_routes($routes) {
 
 		$sidebar_routes = array(
-			'/b3:settings' => array(
-				array( array( $this, 'get_options' ), WP_JSON_Server::READABLE ),
+			'/b3_settings' => array(
+				array(array($this, 'get_options'), WP_JSON_Server::READABLE),
 			),
 
-			'/b3:settings/(?P<option>\w+)' => array(
-				array( array( $this, 'get_option' ), WP_JSON_Server::READABLE ),
+			'/b3_settings/(?P<option>\w+)' => array(
+				array(array($this, 'get_option'), WP_JSON_Server::READABLE),
 			),
 		);
 
-		return array_merge( $routes, $sidebar_routes );
+		return array_merge($routes, $sidebar_routes);
 	}
 
 	/**
@@ -79,11 +79,11 @@ class B3_Settings extends B3_API {
 	public function get_options() {
 		$settings = array();
 
-		foreach ( $this->options as $option ) {
-			$settings[ $option ] = $this->settings->$option;
+		foreach ($this->options as $option) {
+			$settings[$option] = $this->settings->$option;
 		}
 
-		return $this->prepare_settings( $settings );
+		return $this->prepare_settings($settings);
 	}
 
 	/**
@@ -92,13 +92,13 @@ class B3_Settings extends B3_API {
 	 * @param  mixed $option Name of the opttion to retrieve.
 	 * @return array         Settings entity.
 	 */
-	public function get_option( $option ) {
+	public function get_option($option) {
 
 		$settings = array(
 			$option => $this->settings->$option,
 		);
 
-		return $this->prepare_settings( $settings, $option );
+		return $this->prepare_settings($settings, $option);
 	}
 
 	/**
@@ -109,33 +109,33 @@ class B3_Settings extends B3_API {
 	 *
 	 * @return array            Changed settings entity data.
 	 */
-	protected function prepare_settings( $_settings, $context = null ) {
+	protected function prepare_settings($_settings, $context = null) {
 		$settings = array();
 
-		foreach ( $_settings as $option => $value ) {
-			if ( ! in_array( $option, $this->options ) ) {
+		foreach ($_settings as $option => $value) {
+			if (!in_array($option, $this->options)) {
 				continue;
 			}
 
-			$settings[ $option ] = array(
-				'value' => apply_filters( 'b3_settings_option', $value, $option, $context ),
+			$settings[$option] = array(
+				'value' => apply_filters('b3_settings_option', $value, $option, $context),
 				'meta' => array(
 					'links' => array(
-						'self' => json_url( sprintf( '/b3:settings/%s', $option ) ),
+						'self' => json_url(sprintf('/b3_settings/%s', $option)),
 					),
 				),
 			);
 
-			if ( 'page_on_front' === $option && ! empty( $value ) ) {
-				$settings[ $option ]['meta']['links']['page'] = json_url( '/pages/' . $value );
+			if ('page_on_front' === $option && !empty($value)) {
+				$settings[$option]['meta']['links']['page'] = json_url('/pages/' . $value);
 			}
 
-			if ( $context !== null ) {
-				$settings[ $option ]['meta']['links']['collection'] = json_url( '/b3:settings' );
+			if ($context !== null) {
+				$settings[$option]['meta']['links']['collection'] = json_url('/b3_settings');
 			}
 		}
 
-		return apply_filters( 'b3_settings', $settings, $_settings, $context );
+		return apply_filters('b3_settings', $settings, $_settings, $context);
 	}
 
 }
