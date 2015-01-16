@@ -75,6 +75,7 @@ class B3_JSON_REST_API {
 			'B3_Post'     => null,
 			'B3_Settings' => null,
 			'B3_Sidebar'  => null,
+			'B3_ACF_Options' => null
 		);
 
 		add_action( 'init', array( $this, 'init' ), 99 );
