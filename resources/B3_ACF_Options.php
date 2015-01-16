@@ -22,7 +22,7 @@ class B3_ACF_Options extends B3_API {
 	public function register_routes($routes) {
 
 		$option_routes = array(
-			'/B3_acf/options' => array(
+			'/b3_acf/options' => array(
 				array(array($this, 'get_options'), WP_JSON_Server::READABLE),
 			)
 			// ,
