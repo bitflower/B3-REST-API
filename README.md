@@ -71,3 +71,9 @@ Finally, this plugin exposes WordPress settings through the API.  It wraps the `
 
 * `GET` `/b3_settings`
 * `GET` `/b3_settings/<option>`
+
+### ACF (Advanced Custom Fields) Options Page fields
+
+Exposes all fields from a ACF options page if available.
+
+* `GET` `/b3_acf/options`
